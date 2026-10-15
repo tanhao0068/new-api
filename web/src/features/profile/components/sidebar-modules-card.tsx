@@ -63,6 +63,13 @@ export function SidebarModulesCard() {
       description: t('Playground and chat functions'),
       modules: [
         {
+          key: 'studio',
+          title: t('AI Studio'),
+          description: t(
+            'Chat with models, and generate images, videos or voices.'
+          ),
+        },
+        {
           key: 'playground',
           title: t('Playground'),
           description: t('AI model testing environment'),

@@ -88,6 +88,12 @@ export function SidebarModulesSection({
     Record<string, { title: string; description: string }>
   > = {
     chat: {
+      studio: {
+        title: t('AI Studio'),
+        description: t(
+          'Chat with models, and generate images, videos or voices.'
+        ),
+      },
       playground: {
         title: t('Playground'),
         description: t('Experiment with prompts and models in real time.'),

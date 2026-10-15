@@ -18,6 +18,7 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { cleanup, renderHook } from '@testing-library/react'
+import { Image, MessageSquare, Mic, Video } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -178,5 +179,124 @@ describe('audit log sidebar entry', () => {
       .map((item) => item.title)
     expect(titles).not.toContain('Usage Logs')
     expect(titles).toContain('Audit Logs')
+  })
+})
+
+const STUDIO_TITLES = [
+  'Text Chat',
+  'Image Generation',
+  'Video Generation',
+  'Voice Synthesis',
+] as const
+
+describe('experience center sidebar', () => {
+  it('replaces Playground and Chat with four mode entries', () => {
+    const { result } = sidebarFor()
+    const group = result.current.find((item) => item.id === 'chat')
+    expect(group?.title).toBe('Experience Center')
+    expect(group?.items.map((item) => item.title)).toEqual([...STUDIO_TITLES])
+    expect(group?.items).toEqual([
+      expect.objectContaining({
+        title: 'Text Chat',
+        url: '/studio',
+        icon: MessageSquare,
+      }),
+      expect.objectContaining({
+        title: 'Image Generation',
+        url: '/studio/image',
+        icon: Image,
+      }),
+      expect.objectContaining({
+        title: 'Video Generation',
+        url: '/studio/video',
+        icon: Video,
+      }),
+      expect.objectContaining({
+        title: 'Voice Synthesis',
+        url: '/studio/voice',
+        icon: Mic,
+      }),
+    ])
+    const titles = result.current
+      .flatMap((item) => item.items)
+      .map((item) => item.title)
+    expect(titles).not.toContain('Playground')
+    expect(titles).not.toContain('Chat')
+  })
+
+  it('keeps the four entries when a saved config has no studio key', () => {
+    const saved = { chat: { enabled: true, playground: true, chat: true } }
+    expect(parseSidebarModulesAdmin(JSON.stringify(saved)).chat.studio).toBe(
+      true
+    )
+    const { result } = sidebarFor(saved)
+    expect(
+      result.current
+        .find((group) => group.id === 'chat')
+        ?.items.map((item) => item.title)
+    ).toEqual([...STUDIO_TITLES])
+  })
+
+  it.each([
+    [{ chat: { enabled: true, studio: false } }, undefined],
+    [{ chat: { enabled: false } }, { chat: { studio: true } }],
+    [undefined, { chat: { enabled: true, studio: false } }],
+    [undefined, { chat: { enabled: false } }],
+  ])(
+    'admin or user disablement hides every studio entry (%j, %j)',
+    (admin, user) => {
+      const { result } = sidebarFor(admin, user)
+      const titles = result.current
+        .flatMap((item) => item.items)
+        .map((item) => item.title)
+      for (const title of STUDIO_TITLES) {
+        expect(titles).not.toContain(title)
+      }
+    }
+  )
+
+  it('keeps studio entries when the user cannot configure the sidebar', () => {
+    const { result } = sidebarFor(undefined, { chat: { studio: false } }, false)
+    expect(
+      result.current
+        .find((group) => group.id === 'chat')
+        ?.items.map((item) => item.title)
+    ).toEqual([...STUDIO_TITLES])
+  })
+
+  it('does not hide studio entries when only playground is disabled', () => {
+    const { result } = sidebarFor({
+      chat: { enabled: true, playground: false, studio: true },
+    })
+    expect(
+      result.current
+        .find((group) => group.id === 'chat')
+        ?.items.map((item) => item.title)
+    ).toEqual([...STUDIO_TITLES])
+  })
+
+  it('highlights only the mode entry that matches the current path', () => {
+    const { result } = sidebarFor()
+    const items = result.current.find((item) => item.id === 'chat')?.items ?? []
+    expect(
+      items
+        .filter((item) => checkIsActive('/studio', item))
+        .map((item) => item.title)
+    ).toEqual(['Text Chat'])
+    expect(
+      items
+        .filter((item) => checkIsActive('/studio/image', item))
+        .map((item) => item.title)
+    ).toEqual(['Image Generation'])
+    expect(
+      items
+        .filter((item) => checkIsActive('/studio/video', item))
+        .map((item) => item.title)
+    ).toEqual(['Video Generation'])
+    expect(
+      items
+        .filter((item) => checkIsActive('/studio/voice', item))
+        .map((item) => item.title)
+    ).toEqual(['Voice Synthesis'])
   })
 })

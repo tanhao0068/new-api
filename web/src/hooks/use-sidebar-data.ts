@@ -22,11 +22,12 @@ import {
   ClipboardList,
   CreditCard,
   FileText,
-  FlaskConical,
+  Image,
   Key,
   LayoutDashboard,
   ListTodo,
   MessageSquare,
+  Mic,
   PlugZap,
   Radio,
   ServerCog,
@@ -35,6 +36,7 @@ import {
   Ticket,
   User,
   Users,
+  Video,
   Wallet,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -55,17 +57,27 @@ export function useSidebarData(): SidebarData {
     navGroups: [
       {
         id: 'chat',
-        title: t('Chat'),
+        title: t('Experience Center'),
         items: [
           {
-            title: t('Playground'),
-            url: '/playground',
-            icon: FlaskConical,
+            title: t('Text Chat'),
+            url: '/studio',
+            icon: MessageSquare,
           },
           {
-            title: t('Chat'),
-            icon: MessageSquare,
-            type: 'chat-presets',
+            title: t('Image Generation'),
+            url: '/studio/image',
+            icon: Image,
+          },
+          {
+            title: t('Video Generation'),
+            url: '/studio/video',
+            icon: Video,
+          },
+          {
+            title: t('Voice Synthesis'),
+            url: '/studio/voice',
+            icon: Mic,
           },
         ],
       },
