@@ -198,7 +198,7 @@ describe('experience center sidebar', () => {
     expect(group?.items).toEqual([
       expect.objectContaining({
         title: 'Text Chat',
-        url: '/studio',
+        url: '/studio/chat',
         exact: true,
         icon: MessageSquare,
       }),
@@ -284,7 +284,7 @@ describe('experience center sidebar', () => {
     const items = result.current.find((item) => item.id === 'chat')?.items ?? []
     expect(
       items
-        .filter((item) => checkIsActive('/studio', item))
+        .filter((item) => checkIsActive('/studio/chat', item))
         .map((item) => item.title)
     ).toEqual(['Text Chat'])
     expect(

@@ -32,7 +32,7 @@ import type { NavLink } from '../../types'
 import { NavGroup } from '../nav-group'
 
 const STUDIO_ITEMS: NavLink[] = [
-  { title: 'Text Chat', url: '/studio', exact: true },
+  { title: 'Text Chat', url: '/studio/chat', exact: true },
   { title: 'Image Generation', url: '/studio/image', exact: true },
   { title: 'Video Generation', url: '/studio/video', exact: true },
   { title: 'Voice Synthesis', url: '/studio/voice', exact: true },
@@ -51,7 +51,7 @@ async function renderNav(path: string, items: NavLink[]) {
     ),
   })
   const routes = [
-    '/studio',
+    '/studio/chat',
     '/studio/image',
     '/studio/video',
     '/studio/voice',
@@ -84,7 +84,7 @@ function activeLinkNames() {
 }
 
 test.each([
-  ['/studio', 'Text Chat'],
+  ['/studio/chat', 'Text Chat'],
   ['/studio/image', 'Image Generation'],
   ['/studio/video', 'Video Generation'],
   ['/studio/voice', 'Voice Synthesis'],

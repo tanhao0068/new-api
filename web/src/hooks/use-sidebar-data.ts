@@ -61,7 +61,7 @@ export function useSidebarData(): SidebarData {
         items: [
           {
             title: t('Text Chat'),
-            url: '/studio',
+            url: '/studio/chat',
             exact: true,
             icon: MessageSquare,
           },

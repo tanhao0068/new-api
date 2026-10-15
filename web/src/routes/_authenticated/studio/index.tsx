@@ -16,12 +16,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_authenticated/studio/')({
-  component: StudioIndexRoute,
+  beforeLoad: () => {
+    // 体验中心根路径默认进入「文本对话」模式
+    throw redirect({ to: '/studio/chat', replace: true })
+  },
 })
-
-function StudioIndexRoute() {
-  return null
-}

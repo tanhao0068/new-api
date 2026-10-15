@@ -21,6 +21,7 @@ import type { StudioMode } from '../types'
 
 export function studioModeFromPath(pathname: string): StudioMode {
   const path = pathname.replace(/\/+$/, '')
+  if (path.endsWith('/studio/chat')) return 'chat'
   if (path.endsWith('/studio/image')) return 'image'
   if (path.endsWith('/studio/video')) return 'video'
   if (path.endsWith('/studio/voice')) return 'voice'

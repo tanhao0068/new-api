@@ -34,6 +34,9 @@ afterEach(() => {
 })
 
 test('studio paths map to one mode each', () => {
+  expect(studioModeFromPath('/studio/chat')).toBe('chat')
+  expect(studioModeFromPath('/studio/chat/')).toBe('chat')
+  // 体验中心根路径会重定向到 /studio/chat，此处仍应兜底为 chat 模式
   expect(studioModeFromPath('/studio')).toBe('chat')
   expect(studioModeFromPath('/studio/')).toBe('chat')
   expect(studioModeFromPath('/studio/image')).toBe('image')

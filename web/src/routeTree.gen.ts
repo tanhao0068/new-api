@@ -48,6 +48,7 @@ import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedRedemptionCodesIndexRouteImport } from './routes/_authenticated/redemption-codes/index'
 import { Route as AuthenticatedSecurityIndexRouteImport } from './routes/_authenticated/security/index'
 import { Route as AuthenticatedStudioIndexRouteImport } from './routes/_authenticated/studio/index'
+import { Route as AuthenticatedStudioChatRouteImport } from './routes/_authenticated/studio/chat'
 import { Route as AuthenticatedStudioImageRouteImport } from './routes/_authenticated/studio/image'
 import { Route as AuthenticatedStudioVideoRouteImport } from './routes/_authenticated/studio/video'
 import { Route as AuthenticatedStudioVoiceRouteImport } from './routes/_authenticated/studio/voice'
@@ -284,6 +285,11 @@ const AuthenticatedStudioIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedStudioRouteRoute,
   } as any)
+const AuthenticatedStudioChatRoute = AuthenticatedStudioChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AuthenticatedStudioRouteRoute,
+} as any)
 const AuthenticatedStudioImageRoute =
   AuthenticatedStudioImageRouteImport.update({
     id: '/image',
@@ -486,6 +492,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/$section': typeof AuthenticatedDashboardSectionRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/models/$section': typeof AuthenticatedModelsSectionRoute
+  '/studio/chat': typeof AuthenticatedStudioChatRoute
   '/studio/image': typeof AuthenticatedStudioImageRoute
   '/studio/video': typeof AuthenticatedStudioVideoRoute
   '/studio/voice': typeof AuthenticatedStudioVoiceRoute
@@ -552,6 +559,7 @@ export interface FileRoutesByTo {
   '/dashboard/$section': typeof AuthenticatedDashboardSectionRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/models/$section': typeof AuthenticatedModelsSectionRoute
+  '/studio/chat': typeof AuthenticatedStudioChatRoute
   '/studio/image': typeof AuthenticatedStudioImageRoute
   '/studio/video': typeof AuthenticatedStudioVideoRoute
   '/studio/voice': typeof AuthenticatedStudioVoiceRoute
@@ -623,6 +631,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/$section': typeof AuthenticatedDashboardSectionRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/models/$section': typeof AuthenticatedModelsSectionRoute
+  '/_authenticated/studio/chat': typeof AuthenticatedStudioChatRoute
   '/_authenticated/studio/image': typeof AuthenticatedStudioImageRoute
   '/_authenticated/studio/video': typeof AuthenticatedStudioVideoRoute
   '/_authenticated/studio/voice': typeof AuthenticatedStudioVoiceRoute
@@ -693,6 +702,7 @@ export interface FileRouteTypes {
     | '/dashboard/$section'
     | '/errors/$error'
     | '/models/$section'
+    | '/studio/chat'
     | '/studio/image'
     | '/studio/video'
     | '/studio/voice'
@@ -759,6 +769,7 @@ export interface FileRouteTypes {
     | '/dashboard/$section'
     | '/errors/$error'
     | '/models/$section'
+    | '/studio/chat'
     | '/studio/image'
     | '/studio/video'
     | '/studio/voice'
@@ -829,6 +840,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/$section'
     | '/_authenticated/errors/$error'
     | '/_authenticated/models/$section'
+    | '/_authenticated/studio/chat'
     | '/_authenticated/studio/image'
     | '/_authenticated/studio/video'
     | '/_authenticated/studio/voice'
@@ -1163,6 +1175,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudioIndexRouteImport
       parentRoute: typeof AuthenticatedStudioRouteRoute
     }
+    '/_authenticated/studio/chat': {
+      id: '/_authenticated/studio/chat'
+      path: '/chat'
+      fullPath: '/studio/chat'
+      preLoaderRoute: typeof AuthenticatedStudioChatRouteImport
+      parentRoute: typeof AuthenticatedStudioRouteRoute
+    }
     '/_authenticated/studio/image': {
       id: '/_authenticated/studio/image'
       path: '/image'
@@ -1396,6 +1415,7 @@ const authRouteRouteWithChildren = authRouteRoute._addFileChildren(
 )
 
 interface AuthenticatedStudioRouteRouteChildren {
+  AuthenticatedStudioChatRoute: typeof AuthenticatedStudioChatRoute
   AuthenticatedStudioImageRoute: typeof AuthenticatedStudioImageRoute
   AuthenticatedStudioVideoRoute: typeof AuthenticatedStudioVideoRoute
   AuthenticatedStudioVoiceRoute: typeof AuthenticatedStudioVoiceRoute
@@ -1404,6 +1424,7 @@ interface AuthenticatedStudioRouteRouteChildren {
 
 const AuthenticatedStudioRouteRouteChildren: AuthenticatedStudioRouteRouteChildren =
   {
+    AuthenticatedStudioChatRoute: AuthenticatedStudioChatRoute,
     AuthenticatedStudioImageRoute: AuthenticatedStudioImageRoute,
     AuthenticatedStudioVideoRoute: AuthenticatedStudioVideoRoute,
     AuthenticatedStudioVoiceRoute: AuthenticatedStudioVoiceRoute,

@@ -99,6 +99,7 @@ const mergeWithDefaultSidebarModules = (
  */
 const URL_TO_CONFIG_MAP: Record<string, { section: string; module: string }> = {
   '/studio': { section: 'chat', module: 'studio' },
+  '/studio/chat': { section: 'chat', module: 'studio' },
   '/studio/image': { section: 'chat', module: 'studio' },
   '/studio/video': { section: 'chat', module: 'studio' },
   '/studio/voice': { section: 'chat', module: 'studio' },
