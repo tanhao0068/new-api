@@ -62,21 +62,25 @@ export function useSidebarData(): SidebarData {
           {
             title: t('Text Chat'),
             url: '/studio',
+            exact: true,
             icon: MessageSquare,
           },
           {
             title: t('Image Generation'),
             url: '/studio/image',
+            exact: true,
             icon: Image,
           },
           {
             title: t('Video Generation'),
             url: '/studio/video',
+            exact: true,
             icon: Video,
           },
           {
             title: t('Voice Synthesis'),
             url: '/studio/voice',
+            exact: true,
             icon: Mic,
           },
         ],

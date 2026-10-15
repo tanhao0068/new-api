@@ -199,21 +199,25 @@ describe('experience center sidebar', () => {
       expect.objectContaining({
         title: 'Text Chat',
         url: '/studio',
+        exact: true,
         icon: MessageSquare,
       }),
       expect.objectContaining({
         title: 'Image Generation',
         url: '/studio/image',
+        exact: true,
         icon: Image,
       }),
       expect.objectContaining({
         title: 'Video Generation',
         url: '/studio/video',
+        exact: true,
         icon: Video,
       }),
       expect.objectContaining({
         title: 'Voice Synthesis',
         url: '/studio/voice',
+        exact: true,
         icon: Mic,
       }),
     ])

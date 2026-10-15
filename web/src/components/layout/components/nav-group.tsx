@@ -130,6 +130,7 @@ function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
         render={
           <Link
             to={item.url}
+            activeOptions={item.exact ? { exact: true } : undefined}
             preload={isMobile ? false : undefined}
             onClick={() => setOpenMobile(false)}
           />
@@ -192,6 +193,7 @@ function SidebarMenuCollapsible({
                 render={
                   <Link
                     to={subItem.url}
+                    activeOptions={subItem.exact ? { exact: true } : undefined}
                     preload={isMobile ? false : undefined}
                     onClick={() => setOpenMobile(false)}
                   />
@@ -248,6 +250,7 @@ function SidebarMenuCollapsedDropdown({
                 render={
                   <Link
                     to={sub.url}
+                    activeOptions={sub.exact ? { exact: true } : undefined}
                     className={`${checkIsActive(href, sub) ? 'bg-secondary' : ''}`}
                   />
                 }
