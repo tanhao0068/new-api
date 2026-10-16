@@ -92,3 +92,29 @@ export const STUDIO_PLACEHOLDER_DESCRIPTION_KEY: Record<
   voice:
     'Voice synthesis will be available in Phase 2, supporting text-to-speech, Speed / Volume Gain / Voice configuration, and audio download.',
 }
+
+/** 图像生成尺寸档位（原型：5 档；默认 1024x1024，与 spec REQ-013 一致）。
+ *  Qwen-Image 在 1328 系尺寸下质量最佳，故同时提供 1328x1328 与两种宽幅。 */
+export const STUDIO_IMAGE_SIZE_OPTIONS = [
+  '768x768',
+  '1024x1024',
+  '1328x1328',
+  '1664x928',
+  '928x1664',
+] as const
+
+export const STUDIO_IMAGE_DEFAULT_SIZE = '1024x1024'
+
+/** 图像模式默认模型（平台侧自建文生图模型 id）。
+ *  注意：**不能与文本对话共用 config.model** —— 否则图像请求会被路由到聊天渠道，
+ *  实测报 `no route for POST /v1/images/generations`（channel #1, 404）。
+ *  模型列表「按模式区分」的完整实现见 tasks.md §3.4（待办）。 */
+export const STUDIO_IMAGE_DEFAULT_MODEL = 'mibi/qwen-image'
+
+/** 图像模式参数默认值（持久化在 mode config 中，按模式独立记忆） */
+export const STUDIO_IMAGE_PARAM_DEFAULTS: Record<string, unknown> = {
+  model: STUDIO_IMAGE_DEFAULT_MODEL,
+  image_size: STUDIO_IMAGE_DEFAULT_SIZE,
+  seed: '',
+  negative_prompt: '',
+}

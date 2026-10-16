@@ -7315,6 +7315,9 @@
     "Zhipu V4": "Zhipu V 4",
     "Zoom": "ズーム",
     "Add Compare Model": "比較モデルを追加",
-    "Compare Model Disabled": "複数モデルの並列比較は今回のリリースでは未対応です"
+    "Compare Model Disabled": "複数モデルの並列比較は今回のリリースでは未対応です",
+    "Image Size": "画像サイズ",
+    "Negative Prompt": "ネガティブプロンプト",
+    "Image generation failed": "画像生成に失敗しました"
   }
 }

@@ -61,6 +61,8 @@ type StudioPromptBarProps = {
   disabled?: boolean
   isGenerating?: boolean
   mode: StudioMode
+  /** 图像模式：提交生成（与文本对话共用同一输入区，原型 REQ-012） */
+  onImageSubmit?: (text: string) => void
   onSend?: (text: string) => void
   onStop?: () => void
 }
@@ -69,6 +71,10 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
   const { t } = useTranslation()
   const [text, setText] = useState('')
   const chatEnabled = props.mode === 'chat' && !props.disabled
+  // 图像模式同样支持提交（生成式模式一期仅图像已接真实生成）
+  const imageEnabled =
+    props.mode === 'image' && !props.disabled && Boolean(props.onImageSubmit)
+  const inputEnabled = chatEnabled || imageEnabled
 
   useEffect(() => {
     setText('')
@@ -87,13 +93,17 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
   }
 
   const handleSubmit = (message: PromptInputMessage) => {
-    if (!chatEnabled || !props.onSend) return
+    if (!inputEnabled) return
     const submittableText = getSubmittableInputText(
       message,
       props.isGenerating
     )
     if (!submittableText) return
-    props.onSend(submittableText)
+    if (imageEnabled) {
+      props.onImageSubmit?.(submittableText)
+    } else {
+      props.onSend?.(submittableText)
+    }
     setText('')
   }
 
@@ -114,7 +124,7 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
       </div>
       <PromptInput onSubmit={handleSubmit}>
         <PromptInputTextarea
-          disabled={!chatEnabled || props.isGenerating}
+          disabled={!inputEnabled || props.isGenerating}
           onChange={(event) => setText(event.target.value)}
           placeholder={t(STUDIO_PROMPT_PLACEHOLDER_KEY[props.mode])}
           value={text}
@@ -133,7 +143,7 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
                           <PromptInputButton
                             aria-label={t('Attach')}
                             className='text-muted-foreground hover:text-foreground hover:bg-muted/70 font-medium'
-                            disabled={!chatEnabled}
+                            disabled={!inputEnabled}
                             variant='ghost'
                           />
                         }
@@ -165,7 +175,7 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
                     <PromptInputButton
                       aria-label={t('Search')}
                       className='text-muted-foreground hover:text-foreground hover:bg-muted/70 font-medium'
-                      disabled={!chatEnabled}
+                      disabled={!inputEnabled}
                       onClick={handleSearchAction}
                       variant='ghost'
                     >
@@ -193,8 +203,8 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
           ) : (
             <PromptInputSubmit
               aria-label={t(STUDIO_SEND_LABEL_KEY[props.mode])}
-              disabled={!chatEnabled || text.trim().length === 0}
-              size='default'
+              disabled={!inputEnabled || text.trim().length === 0}
+              size='sm'
             >
               {t(STUDIO_SEND_LABEL_KEY[props.mode])}
             </PromptInputSubmit>

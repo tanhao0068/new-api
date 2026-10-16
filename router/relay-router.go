@@ -67,6 +67,9 @@ func SetRelayRouter(router *gin.Engine) {
 	playgroundRouter.Use(middleware.UserAuth(), middleware.Distribute())
 	{
 		playgroundRouter.POST("/chat/completions", controller.Playground)
+		// 体验中心「图像生成」模式的登录态入口（mibi-devel 定制，见
+		// controller/playground_image.go 与 docs/tech/upstream-fork-ledger.md）
+		playgroundRouter.POST("/images/generations", controller.PlaygroundImage)
 	}
 	relayV1Router := router.Group("/v1")
 	relayV1Router.Use(middleware.RouteTag("relay"))

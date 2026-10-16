@@ -7315,6 +7315,9 @@
     "Zhipu V4": "智譜 V4",
     "Zoom": "縮放",
     "Add Compare Model": "新增對比模型",
-    "Compare Model Disabled": "一期暫不支援多模型並行對比"
+    "Compare Model Disabled": "一期暫不支援多模型並行對比",
+    "Image Size": "圖像尺寸",
+    "Negative Prompt": "負向提示詞",
+    "Image generation failed": "圖像生成失敗"
   }
 }

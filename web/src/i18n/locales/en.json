@@ -7315,6 +7315,9 @@
     "Zhipu V4": "Zhipu V4",
     "Zoom": "Zoom",
     "Add Compare Model": "Add Compare Model",
-    "Compare Model Disabled": "Multi-model comparison is not available in this release"
+    "Compare Model Disabled": "Multi-model comparison is not available in this release",
+    "Image Size": "Image Size",
+    "Negative Prompt": "Negative Prompt",
+    "Image generation failed": "Image generation failed"
   }
 }

@@ -33,7 +33,6 @@ import {
 import type {
   GroupOption,
   ModelOption,
-  ParameterEnabled,
   PlaygroundConfig,
 } from '@/features/playground/types'
 

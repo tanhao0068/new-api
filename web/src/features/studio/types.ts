@@ -24,3 +24,23 @@ export type StudioGenerationMode = Exclude<StudioMode, 'chat'>
 export type StudioModeConfigMap = Partial<
   Record<StudioGenerationMode, Record<string, unknown>>
 >
+
+/** 图像生成工作区状态 */
+export type StudioImageStatus = 'idle' | 'generating' | 'success' | 'error'
+
+export type StudioImageState = {
+  status: StudioImageStatus
+  url?: string
+  prompt?: string
+  size?: string
+  seed?: number
+  elapsed?: number
+  error?: string
+}
+
+/** 图像模式参数（持久化于 studio mode config） */
+export type StudioImageConfig = {
+  image_size?: string
+  seed?: string | number
+  negative_prompt?: string
+}
