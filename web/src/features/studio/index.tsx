@@ -49,6 +49,8 @@ export function StudioShell() {
   const mode = studioModeFromPath(pathname)
   const {
     config,
+    groups,
+    models,
     parameterEnabled,
     messages,
     isLoadingMessages,
@@ -128,8 +130,12 @@ export function StudioShell() {
       <StudioChatParameterPanel
         config={config}
         disabled={isGenerating}
+        groups={groups}
+        models={models}
         onClearSession={handleClearSession}
         onConfigChange={updateConfig}
+        onGroupChange={(value) => updateConfig('group', value)}
+        onModelChange={(value) => updateConfig('model', value)}
         onParameterEnabledChange={updateParameterEnabled}
         onThinkingBudgetChange={thinkingBudget.setValue}
         showThinkingBudget={showThinkingBudget}

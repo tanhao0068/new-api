@@ -16,10 +16,12 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
+import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ConfirmDialog } from '@/components/confirm-dialog'
+import { ModelGroupSelector } from '@/components/model-group-selector'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Slider } from '@/components/ui/slider'
@@ -29,6 +31,8 @@ import {
   type PlaygroundParameterKey,
 } from '@/features/playground/lib/parameters/playground-parameters'
 import type {
+  GroupOption,
+  ModelOption,
   ParameterEnabled,
   PlaygroundConfig,
 } from '@/features/playground/types'
@@ -38,7 +42,11 @@ import { THINKING_BUDGET_CONTROL } from '../../constants'
 type StudioChatParameterPanelProps = {
   config: PlaygroundConfig
   disabled?: boolean
+  groups: GroupOption[]
+  models: ModelOption[]
   onClearSession: () => void
+  onGroupChange: (value: string) => void
+  onModelChange: (value: string) => void
   onConfigChange: <K extends keyof PlaygroundConfig>(
     key: K,
     value: PlaygroundConfig[K]
@@ -80,6 +88,35 @@ export function StudioChatParameterPanel(props: StudioChatParameterPanelProps) {
   return (
     <div className='flex h-full min-h-0 flex-col'>
       <div className='min-h-0 flex-1 space-y-4 overflow-y-auto p-4'>
+        {/* 模型选择区（所有模式共用，原型 REQ-004）：
+            复用官方 ModelGroupSelector（与 playground 输入区同一组件，含搜索与分组联动），
+            仅按原型放在左侧参数面板内。 */}
+        <div className='grid gap-2'>
+          <span className='text-sm font-medium'>{t('Model')}</span>
+          <ModelGroupSelector
+            className='w-full'
+            disabled={props.disabled}
+            groups={props.groups}
+            models={props.models}
+            onGroupChange={props.onGroupChange}
+            onModelChange={props.onModelChange}
+            selectedGroup={props.config.group}
+            selectedModel={props.config.model}
+          />
+          {/* 原型：一期 UI 占位，不可用 */}
+          <Button
+            className='border-dashed'
+            disabled
+            size='sm'
+            title={t('Add Compare Model')}
+            type='button'
+            variant='outline'
+          >
+            <Plus aria-hidden='true' />
+            {t('Add Compare Model')}
+          </Button>
+        </div>
+        <div className='border-t' />
         {PRIMARY_PARAMETER_KEYS.map((key) => (
           <ParameterControl
             config={props.config}

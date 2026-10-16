@@ -84,7 +84,14 @@ export function StudioLayout(props: StudioLayoutProps) {
           onOpenParameters={() => setParametersOpen(true)}
           parametersOpen={parametersOpen}
         />
-        <div className='min-h-0 flex-1 overflow-hidden'>{props.workspace}</div>
+        {/* 与官方 playground 页面同构：workspace 必须是 flex 纵向容器。
+            Conversation 的根样式为 `relative min-h-0 flex-1 overflow-hidden`，
+            只有作为 flex item 才能获得有界高度；否则高度随内容无限增长，
+            再被 overflow-hidden 裁掉 → 对话框无法滚动、后续会话不可见。
+            （BUG-20261015-05） */}
+        <div className='flex min-h-0 flex-1 flex-col overflow-hidden'>
+          {props.workspace}
+        </div>
         <div className='shrink-0 border-t'>{props.prompt}</div>
       </section>
       {narrow ? (

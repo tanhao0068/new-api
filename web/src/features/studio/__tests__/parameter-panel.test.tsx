@@ -38,12 +38,24 @@ function renderPanel(
   const onParameterEnabledChange = vi.fn()
   const onThinkingBudgetChange = vi.fn()
   const onClearSession = vi.fn()
+  const onGroupChange = vi.fn()
+  const onModelChange = vi.fn()
 
   render(
     <StudioChatParameterPanel
       config={overrides.config ?? DEFAULT_CONFIG}
+      groups={[
+        { label: 'Default Group', ratio: 1, value: 'default' },
+        { label: 'Premium Group', ratio: 2, value: 'premium' },
+      ]}
+      models={[
+        { label: 'GLM-5.3-Flash', value: 'glm-5.3-flash' },
+        { label: 'gpt-4o', value: 'gpt-4o' },
+      ]}
       onClearSession={onClearSession}
       onConfigChange={onConfigChange}
+      onGroupChange={onGroupChange}
+      onModelChange={onModelChange}
       onParameterEnabledChange={onParameterEnabledChange}
       onThinkingBudgetChange={onThinkingBudgetChange}
       showThinkingBudget={overrides.showThinkingBudget ?? false}
@@ -54,10 +66,38 @@ function renderPanel(
   return {
     onClearSession,
     onConfigChange,
+    onGroupChange,
+    onModelChange,
     onParameterEnabledChange,
     onThinkingBudgetChange,
   }
 }
+
+test('the model selection window sits above the parameters (prototype REQ-004)', () => {
+  const { onModelChange, onGroupChange } = renderPanel({
+    config: { ...DEFAULT_CONFIG, group: 'default', model: 'glm-5.3-flash' },
+  })
+
+  // 模型与分组选择器（复用官方 ModelGroupSelector：一个组合选择器 + 搜索）
+  expect(screen.getAllByRole('combobox').length).toBeGreaterThanOrEqual(1)
+
+  // 当前模型回显，且位于参数控件之前
+  const modelLabel = screen.getByText('GLM-5.3-Flash')
+  const temperature = screen.getByText('Temperature')
+  expect(
+    modelLabel.compareDocumentPosition(temperature) &
+      Node.DOCUMENT_POSITION_FOLLOWING
+  ).toBeTruthy()
+
+  // 一期占位：对比模型按钮不可用
+  const compareButton = screen.getByRole('button', {
+    name: /Add Compare Model/,
+  })
+  expect(compareButton).toBeDisabled()
+
+  expect(onModelChange).toBeTypeOf('function')
+  expect(onGroupChange).toBeTypeOf('function')
+})
 
 test('chat parameters use playground ranges and defaults', () => {
   renderPanel()

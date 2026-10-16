@@ -124,3 +124,28 @@ test('narrow layout opens the parameter panel in a drawer and closes it from the
   expect(parametersButton).toHaveAttribute('aria-expanded', 'false')
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
 })
+
+test('workspace wrapper is a bounded flex column so the conversation can scroll', async () => {
+  // BUG-20261015-05：Conversation 的根样式是 `min-h-0 flex-1 overflow-hidden`，
+  // 必须作为 flex 纵向容器的子项才有有界高度。jsdom 无布局引擎，故断言结构契约。
+  setWidth(1280)
+
+  await renderLayout(
+    <StudioLayout
+      mode='chat'
+      modelName='gpt-4o'
+      parameterPanel={<p>Temperature control</p>}
+      prompt={<p>Prompt</p>}
+      workspace={<p>Messages</p>}
+    />
+  )
+
+  const wrapper = screen.getByText('Messages').parentElement as HTMLElement
+  const tokens = wrapper.className.split(/\s+/)
+
+  expect(tokens).toContain('flex')
+  expect(tokens).toContain('flex-col')
+  expect(tokens).toContain('min-h-0')
+  expect(tokens).toContain('flex-1')
+  expect(tokens).toContain('overflow-hidden')
+})
