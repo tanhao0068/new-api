@@ -7318,6 +7318,9 @@
     "Compare Model Disabled": "So sánh nhiều mô hình chưa được hỗ trợ trong phiên bản này",
     "Image Size": "Kích thước ảnh",
     "Negative Prompt": "Lời nhắc tiêu cực",
-    "Image generation failed": "Tạo ảnh thất bại"
+    "Image generation failed": "Tạo ảnh thất bại",
+    "Upload Image": "Tải ảnh lên",
+    "Video generation failed": "Tạo video thất bại",
+    "Image-to-video is not available yet": "Chưa hỗ trợ tạo video từ ảnh"
   }
 }

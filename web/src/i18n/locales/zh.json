@@ -5953,7 +5953,7 @@
     "Submit Time": "提交时间",
     "Submitted": "已提交",
     "Submitting": "提交中",
-    "Submitting...": "提交中...",
+    "Submitting...": "提交中…",
     "Submodel": "Submodel",
     "Subscribe Now": "立即订阅",
     "Subscribe to a plan for model access": "订阅套餐以获取模型访问权限",
@@ -7318,6 +7318,9 @@
     "Compare Model Disabled": "一期暂不支持多模型并行对比",
     "Image Size": "图像尺寸",
     "Negative Prompt": "负向提示词",
-    "Image generation failed": "图像生成失败"
+    "Image generation failed": "图像生成失败",
+    "Upload Image": "上传图片",
+    "Video generation failed": "视频生成失败",
+    "Image-to-video is not available yet": "暂无图生视频模型"
   }
 }

@@ -17,7 +17,7 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 For commercial licensing, please contact support@quantumnous.com
 */
 import { Outlet, useRouterState } from '@tanstack/react-router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { PLAYGROUND_PARAMETER_CONTROLS } from '@/features/playground/lib/parameters/playground-parameters'
 import {
@@ -31,13 +31,15 @@ import { StudioChatParameterPanel } from './components/chat/studio-chat-paramete
 import { StudioChatWorkspace } from './components/studio-chat-workspace'
 import { StudioImageParameterPanel } from './components/image/studio-image-parameter-panel'
 import { StudioImageWorkspace } from './components/studio-image-workspace'
+import { StudioVideoParameterPanel } from './components/video/studio-video-parameter-panel'
+import { StudioVideoWorkspace } from './components/studio-video-workspace'
 import { StudioLayout } from './components/studio-layout'
 import { StudioPromptBar } from './components/studio-prompt-bar'
-import { StudioVideoPlaceholder } from './components/studio-video-placeholder'
 import { StudioVoicePlaceholder } from './components/studio-voice-placeholder'
 import {
   STUDIO_IMAGE_DEFAULT_MODEL,
   STUDIO_IMAGE_DEFAULT_SIZE,
+  STUDIO_VIDEO_DEFAULT_MODEL,
 } from './constants'
 import {
   useStudioChatAugmentor,
@@ -47,7 +49,14 @@ import {
 import { generateStudioImage, toImageErrorMessage } from './lib/image-request'
 import { studioModeFromPath } from './lib/studio-mode'
 import { modelSupportsThinkingBudget } from './lib/thinking-budget'
-import type { StudioImageState } from './types'
+import {
+  createStudioVideo,
+  fetchStudioVideo,
+  fetchStudioVideoBlobUrl,
+  studioVideoContentUrl,
+  toVideoErrorMessage,
+} from './lib/video-request'
+import type { StudioImageState, StudioVideoState } from './types'
 
 export function StudioShell() {
   const pathname = useRouterState({
@@ -71,6 +80,13 @@ export function StudioShell() {
   const [imageState, setImageState] = useState<StudioImageState>({
     status: 'idle',
   })
+  const [videoState, setVideoState] = useState<StudioVideoState>({
+    status: 'idle',
+  })
+  // 当前正在轮询的视频任务 id；置空即取消轮询（切换/重新生成/卸载）
+  const videoTaskRef = useRef<string | null>(null)
+  // 视频 object URL（<video> 无法携带鉴权头，故先取 Blob 再播放）
+  const videoBlobUrlRef = useRef<string | null>(null)
   const thinkingBudget = useStudioThinkingBudget()
   const modeConfig = useStudioModeConfig()
   const showThinkingBudget = modelSupportsThinkingBudget(config.model)
@@ -171,6 +187,104 @@ export function StudioShell() {
     [modeConfig.configs.image]
   )
 
+  // 视频生成：登录态提交任务 → 客户端轮询（5s 间隔，最长 20 分钟）→ 完成后取视频内容
+  const runVideoGeneration = useCallback(
+    async (prompt: string) => {
+      const videoConfig = (modeConfig.configs.video ??
+        {}) as Record<string, unknown>
+      const model =
+        typeof videoConfig.model === 'string' &&
+        videoConfig.model.trim() !== ''
+          ? videoConfig.model.trim()
+          : STUDIO_VIDEO_DEFAULT_MODEL
+      const rawSeed = videoConfig.seed
+      const seed =
+        typeof rawSeed === 'string' && rawSeed.trim() !== ''
+          ? Number(rawSeed)
+          : typeof rawSeed === 'number'
+            ? rawSeed
+            : undefined
+      const negativePrompt =
+        typeof videoConfig.negative_prompt === 'string'
+          ? videoConfig.negative_prompt
+          : undefined
+
+      // 取消上一轮轮询
+      videoTaskRef.current = null
+      setVideoState({ status: 'submitting', prompt })
+
+      let taskId: string
+      try {
+        taskId = await createStudioVideo({ model, prompt, seed, negativePrompt })
+      } catch (error) {
+        setVideoState({
+          status: 'error',
+          prompt,
+          error: toVideoErrorMessage(error),
+        })
+        return
+      }
+
+      videoTaskRef.current = taskId
+      setVideoState({ status: 'generating', prompt, taskId, progress: 0 })
+
+      const deadline = Date.now() + 20 * 60 * 1000
+      while (videoTaskRef.current === taskId && Date.now() < deadline) {
+        await new Promise((resolve) => setTimeout(resolve, 5000))
+        if (videoTaskRef.current !== taskId) return
+        try {
+          const task = await fetchStudioVideo(taskId)
+          if (task.status === 'completed') {
+            // 先尝试带鉴权取回 Blob（可播放/可下载）；失败则退回直连内容地址
+            let url = studioVideoContentUrl(taskId)
+            try {
+              const blobUrl = await fetchStudioVideoBlobUrl(taskId)
+              if (videoBlobUrlRef.current) {
+                URL.revokeObjectURL(videoBlobUrlRef.current)
+              }
+              videoBlobUrlRef.current = blobUrl
+              url = blobUrl
+            } catch {
+              // 保留直连地址，交由播放器/浏览器自行处理
+            }
+            if (videoTaskRef.current !== taskId) return
+            setVideoState({ status: 'success', prompt, taskId, url })
+            return
+          }
+          if (task.status === 'failed') {
+            setVideoState({
+              status: 'error',
+              prompt,
+              taskId,
+              error: task.errorMessage || 'Video generation failed',
+            })
+            return
+          }
+          setVideoState((prev) => ({
+            ...prev,
+            status: 'generating',
+            prompt,
+            taskId,
+            progress: task.progress ?? prev.progress,
+          }))
+        } catch {
+          // 单次轮询失败（网络抖动）不终止任务
+          continue
+        }
+      }
+    },
+    [modeConfig.configs.video]
+  )
+
+  // 卸载时停止轮询并释放 object URL
+  useEffect(() => () => {
+    videoTaskRef.current = null
+    if (videoBlobUrlRef.current) {
+      URL.revokeObjectURL(videoBlobUrlRef.current)
+      videoBlobUrlRef.current = null
+    }
+  }, [])
+
   const handleClearSession = () => {
     conversation.handleEditOpenChange(false)
     clearMessages()
@@ -197,11 +311,34 @@ export function StudioShell() {
         state={imageState}
       />
     )
-  if (mode === 'video') workspace = <StudioVideoPlaceholder />
+  if (mode === 'video')
+    workspace = (
+      <StudioVideoWorkspace
+        onRegenerate={() => {
+          if (videoState.prompt) void runVideoGeneration(videoState.prompt)
+        }}
+        state={videoState}
+      />
+    )
   if (mode === 'voice') workspace = <StudioVoicePlaceholder />
 
   const parameterPanel =
-    mode === 'image' ? (
+    mode === 'video' ? (
+      <StudioVideoParameterPanel
+        config={config}
+        disabled={
+          videoState.status === 'submitting' ||
+          videoState.status === 'generating'
+        }
+        groups={groups}
+        models={models}
+        onConfigChange={updateConfig}
+        onGroupChange={(value) => updateConfig('group', value)}
+        onModelChange={(value) => modeConfig.update('video', { model: value })}
+        onVideoConfigChange={(patch) => modeConfig.update('video', patch)}
+        videoConfig={(modeConfig.configs.video ?? {}) as Record<string, unknown>}
+      />
+    ) : mode === 'image' ? (
       <StudioImageParameterPanel
         config={config}
         disabled={imageState.status === 'generating'}
@@ -239,7 +376,12 @@ export function StudioShell() {
         prompt={
           <StudioPromptBar
             isGenerating={
-              mode === 'image' ? imageState.status === 'generating' : isGenerating
+              mode === 'image'
+                ? imageState.status === 'generating'
+                : mode === 'video'
+                  ? videoState.status === 'submitting' ||
+                    videoState.status === 'generating'
+                  : isGenerating
             }
             mode={mode}
             onImageSubmit={
@@ -253,6 +395,13 @@ export function StudioShell() {
               mode === 'chat' ? conversation.handleSendMessage : undefined
             }
             onStop={stopGeneration}
+            onVideoSubmit={
+              mode === 'video'
+                ? (text) => {
+                    void runVideoGeneration(text)
+                  }
+                : undefined
+            }
           />
         }
         workspace={workspace}

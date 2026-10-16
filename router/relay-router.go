@@ -71,6 +71,29 @@ func SetRelayRouter(router *gin.Engine) {
 		// controller/playground_image.go 与 docs/tech/upstream-fork-ledger.md）
 		playgroundRouter.POST("/images/generations", controller.PlaygroundImage)
 	}
+
+	// 体验中心「视频生成」模式的登录态入口（mibi-devel 定制，见 controller/playground_video.go）。
+	// 独立分组：视频走任务链路，要求 Pin/Prepare 先于 Distribute，故不挂组级 Distribute。
+	playgroundVideoRouter := router.Group("/pg")
+	playgroundVideoRouter.Use(middleware.RouteTag("relay"))
+	playgroundVideoRouter.Use(middleware.SystemPerformanceCheck())
+	playgroundVideoRouter.Use(middleware.UserAuth())
+	{
+		playgroundVideoRouter.POST("/videos/generations",
+			middleware.RewriteTaskEndpointPath("/v1/videos"),
+			middleware.PinTaskPluginEndpoint(),
+			middleware.TaskPluginEndpointOnly(middleware.ModelRequestRateLimit()),
+			middleware.PrepareTaskPluginEndpoint(),
+			middleware.Distribute(),
+			controller.PlaygroundVideoSubmit)
+		playgroundVideoRouter.GET("/videos/:task_id",
+			middleware.RewriteTaskEndpointPath("/v1/videos/:task_id"),
+			middleware.Distribute(),
+			controller.PlaygroundVideoFetch)
+		playgroundVideoRouter.GET("/videos/:task_id/content",
+			middleware.RewriteTaskEndpointPath("/v1/videos/:task_id/content"),
+			controller.PlaygroundVideoContent)
+	}
 	relayV1Router := router.Group("/v1")
 	relayV1Router.Use(middleware.RouteTag("relay"))
 	relayV1Router.Use(middleware.SystemPerformanceCheck())

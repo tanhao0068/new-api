@@ -7318,6 +7318,9 @@
     "Compare Model Disabled": "La comparaison multi-modèles n'est pas disponible dans cette version",
     "Image Size": "Taille de l'image",
     "Negative Prompt": "Prompt négatif",
-    "Image generation failed": "Échec de la génération d'image"
+    "Image generation failed": "Échec de la génération d'image",
+    "Upload Image": "Téléverser une image",
+    "Video generation failed": "Échec de la génération de vidéo",
+    "Image-to-video is not available yet": "Image-vers-vidéo bientôt disponible"
   }
 }

@@ -44,3 +44,20 @@ export type StudioImageConfig = {
   seed?: string | number
   negative_prompt?: string
 }
+
+/** 视频生成工作区状态（异步任务：提交 → 排队 → 生成中 → 完成/失败） */
+export type StudioVideoStatus =
+  | 'idle'
+  | 'submitting'
+  | 'generating'
+  | 'success'
+  | 'error'
+
+export type StudioVideoState = {
+  status: StudioVideoStatus
+  taskId?: string
+  url?: string
+  prompt?: string
+  progress?: number
+  error?: string
+}

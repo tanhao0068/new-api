@@ -63,6 +63,8 @@ type StudioPromptBarProps = {
   mode: StudioMode
   /** 图像模式：提交生成（与文本对话共用同一输入区，原型 REQ-012） */
   onImageSubmit?: (text: string) => void
+  /** 视频模式：提交生成任务（异步任务，客户端轮询） */
+  onVideoSubmit?: (text: string) => void
   onSend?: (text: string) => void
   onStop?: () => void
 }
@@ -71,10 +73,12 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
   const { t } = useTranslation()
   const [text, setText] = useState('')
   const chatEnabled = props.mode === 'chat' && !props.disabled
-  // 图像模式同样支持提交（生成式模式一期仅图像已接真实生成）
+  // 图像/视频模式同样支持提交（均已接真实生成；视频为异步任务）
   const imageEnabled =
     props.mode === 'image' && !props.disabled && Boolean(props.onImageSubmit)
-  const inputEnabled = chatEnabled || imageEnabled
+  const videoEnabled =
+    props.mode === 'video' && !props.disabled && Boolean(props.onVideoSubmit)
+  const inputEnabled = chatEnabled || imageEnabled || videoEnabled
 
   useEffect(() => {
     setText('')
@@ -99,7 +103,9 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
       props.isGenerating
     )
     if (!submittableText) return
-    if (imageEnabled) {
+    if (videoEnabled) {
+      props.onVideoSubmit?.(submittableText)
+    } else if (imageEnabled) {
       props.onImageSubmit?.(submittableText)
     } else {
       props.onSend?.(submittableText)

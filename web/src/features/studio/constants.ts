@@ -118,3 +118,14 @@ export const STUDIO_IMAGE_PARAM_DEFAULTS: Record<string, unknown> = {
   seed: '',
   negative_prompt: '',
 }
+
+/** 视频模式默认模型（平台侧自建文生视频任务插件模型 id）。
+ *  与图像模式同理：**不与文本对话共用 config.model**，否则请求会打到聊天渠道。 */
+export const STUDIO_VIDEO_DEFAULT_MODEL = 'mibi/wan2.2-t2v'
+
+/** 视频模式参数默认值（原型 REQ-013：Upload Image / Seed / Negative Prompt） */
+export const STUDIO_VIDEO_PARAM_DEFAULTS: Record<string, unknown> = {
+  model: STUDIO_VIDEO_DEFAULT_MODEL,
+  seed: '',
+  negative_prompt: '',
+}

@@ -7318,6 +7318,9 @@
     "Compare Model Disabled": "Multi-model comparison is not available in this release",
     "Image Size": "Image Size",
     "Negative Prompt": "Negative Prompt",
-    "Image generation failed": "Image generation failed"
+    "Image generation failed": "Image generation failed",
+    "Upload Image": "Upload Image",
+    "Video generation failed": "Video generation failed",
+    "Image-to-video is not available yet": "Image-to-video is not available yet"
   }
 }
