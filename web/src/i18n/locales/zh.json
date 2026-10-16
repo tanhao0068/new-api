@@ -7314,6 +7314,7 @@
     "Zhipu GLM": "智谱GLM",
     "Zhipu V4": "智谱 V4",
     "Zoom": "缩放",
-    "Add Compare Model": "添加对比模型"
+    "Add Compare Model": "添加对比模型",
+    "Compare Model Disabled": "一期暂不支持多模型并行对比"
   }
 }

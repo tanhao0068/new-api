@@ -7314,6 +7314,7 @@
     "Zhipu GLM": "智譜GLM",
     "Zhipu V4": "智譜 V4",
     "Zoom": "縮放",
-    "Add Compare Model": "新增對比模型"
+    "Add Compare Model": "新增對比模型",
+    "Compare Model Disabled": "一期暫不支援多模型並行對比"
   }
 }

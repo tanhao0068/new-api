@@ -16,18 +16,38 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
-import { Square } from 'lucide-react'
+import { Globe, Paperclip, Square } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
 
 import {
   PromptInput,
+  PromptInputButton,
   PromptInputFooter,
   PromptInputSubmit,
   PromptInputTextarea,
+  PromptInputTools,
   type PromptInputMessage,
 } from '@/components/ai-elements/prompt-input'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
+import {
+  ATTACHMENT_ACTIONS,
+  getAttachmentActionNotice,
+  getSearchActionNotice,
+} from '@/features/playground/lib/input/input-tool-utils'
 import { getSubmittableInputText } from '@/features/playground/lib/input/input-control-utils'
 
 import {
@@ -53,6 +73,18 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
   useEffect(() => {
     setText('')
   }, [props.mode])
+
+  // 与官方 playground 输入区同源：附件动作与联网搜索在当前版本为占位提示
+  // （官方实现即 ATTACHMENT_ACTIONS + getAttachmentActionNotice → toast，文案完全复用）
+  const handleFileAction = (action: string) => {
+    const notice = getAttachmentActionNotice(action)
+    toast.info(t(notice.title), { description: notice.description })
+  }
+
+  const handleSearchAction = () => {
+    const notice = getSearchActionNotice()
+    toast.info(t(notice.title))
+  }
 
   const handleSubmit = (message: PromptInputMessage) => {
     if (!chatEnabled || !props.onSend) return
@@ -87,7 +119,67 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
           placeholder={t(STUDIO_PROMPT_PLACEHOLDER_KEY[props.mode])}
           value={text}
         />
-        <PromptInputFooter className='justify-end'>
+        <PromptInputFooter>
+          {/* 工具行：附件菜单 + 联网搜索 —— 与官方 playground 输入区同一套动作、
+              同一套常量与提示文案（避免两处实现漂移） */}
+          <TooltipProvider>
+            <PromptInputTools className='bg-background/70 border-border/60 rounded-lg border p-1 shadow-xs'>
+              <Tooltip>
+                <DropdownMenu>
+                  <TooltipTrigger
+                    render={
+                      <DropdownMenuTrigger
+                        render={
+                          <PromptInputButton
+                            aria-label={t('Attach')}
+                            className='text-muted-foreground hover:text-foreground hover:bg-muted/70 font-medium'
+                            disabled={!chatEnabled}
+                            variant='ghost'
+                          />
+                        }
+                      >
+                        <Paperclip aria-hidden='true' size={16} />
+                      </DropdownMenuTrigger>
+                    }
+                  />
+                  <TooltipContent>
+                    <p>{t('Attach')}</p>
+                  </TooltipContent>
+                  <DropdownMenuContent align='start'>
+                    {ATTACHMENT_ACTIONS.map(({ action, icon: Icon, label }) => (
+                      <DropdownMenuItem
+                        key={action}
+                        onClick={() => handleFileAction(action)}
+                      >
+                        <Icon aria-hidden='true' className='mr-2' size={16} />
+                        {t(label)}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </Tooltip>
+
+              <Tooltip>
+                <TooltipTrigger
+                  render={
+                    <PromptInputButton
+                      aria-label={t('Search')}
+                      className='text-muted-foreground hover:text-foreground hover:bg-muted/70 font-medium'
+                      disabled={!chatEnabled}
+                      onClick={handleSearchAction}
+                      variant='ghost'
+                    >
+                      <Globe aria-hidden='true' size={16} />
+                    </PromptInputButton>
+                  }
+                />
+                <TooltipContent>
+                  <p>{t('Search')}</p>
+                </TooltipContent>
+              </Tooltip>
+            </PromptInputTools>
+          </TooltipProvider>
+
           {props.isGenerating && props.mode === 'chat' ? (
             <Button
               aria-label={t('Stop')}

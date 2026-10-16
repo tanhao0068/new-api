@@ -108,7 +108,7 @@ export function StudioChatParameterPanel(props: StudioChatParameterPanelProps) {
             className='border-dashed'
             disabled
             size='sm'
-            title={t('Add Compare Model')}
+            title={t('Compare Model Disabled')}
             type='button'
             variant='outline'
           >

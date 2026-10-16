@@ -7314,6 +7314,7 @@
     "Zhipu GLM": "Zhipu GLM",
     "Zhipu V4": "Zhipu V4",
     "Zoom": "Zoom",
-    "Add Compare Model": "Thêm mô hình so sánh"
+    "Add Compare Model": "Thêm mô hình so sánh",
+    "Compare Model Disabled": "So sánh nhiều mô hình chưa được hỗ trợ trong phiên bản này"
   }
 }
