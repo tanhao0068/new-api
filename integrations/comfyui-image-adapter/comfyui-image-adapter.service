@@ -1,0 +1,22 @@
+[Unit]
+Description=ComfyUI Image Adapter (OpenAI-compatible text-to-image for mibi-api)
+Documentation=file:///home/test/data/mibi-api/integrations/comfyui-image-adapter/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/test/data/mibi-api/integrations/comfyui-image-adapter
+# 注意：路径与 public-base-url 为部署相关参数，换机部署时需按实际环境调整
+ExecStart=/usr/bin/python3 /home/test/data/mibi-api/integrations/comfyui-image-adapter/adapter.py \
+    --listen 0.0.0.0 --port 19010 \
+    --public-base-url http://192.168.0.42:19010 \
+    --cache-dir /home/test/data/comfyui-image-cache \
+    --timeout 600 --max-concurrency 2
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/test/data/comfyui-image-cache/adapter.log
+StandardError=append:/home/test/data/comfyui-image-cache/adapter.log
+
+[Install]
+WantedBy=default.target
