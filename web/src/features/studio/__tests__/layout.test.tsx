@@ -126,7 +126,7 @@ test('narrow layout opens the parameter panel in a drawer and closes it from the
 })
 
 test('workspace wrapper is a bounded flex column so the conversation can scroll', async () => {
-  // BUG-20261015-05：Conversation 的根样式是 `min-h-0 flex-1 overflow-hidden`，
+  // BUG-20261016-01：Conversation 的根样式是 `min-h-0 flex-1 overflow-hidden`，
   // 必须作为 flex 纵向容器的子项才有有界高度。jsdom 无布局引擎，故断言结构契约。
   setWidth(1280)
 

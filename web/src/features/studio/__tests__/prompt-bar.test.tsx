@@ -32,7 +32,7 @@ import { StudioPromptBar } from '../components/studio-prompt-bar'
 
 /**
  * 官方 playground 输入区的附件菜单在 studio 页面此前完全缺失
- * （见 docs/bugs/BUG-20261015-07.md）。此处断言工具行存在且动作与官方同源。
+ * （见 docs/bugs/BUG-20261016-03.md）。此处断言工具行存在且动作与官方同源。
  */
 test('the input tools row exposes the same attachment actions as the playground', async () => {
   const user = userEvent.setup()
