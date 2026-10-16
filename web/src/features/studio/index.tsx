@@ -33,13 +33,18 @@ import { StudioImageParameterPanel } from './components/image/studio-image-param
 import { StudioImageWorkspace } from './components/studio-image-workspace'
 import { StudioVideoParameterPanel } from './components/video/studio-video-parameter-panel'
 import { StudioVideoWorkspace } from './components/studio-video-workspace'
+import { StudioVoiceParameterPanel } from './components/voice/studio-voice-parameter-panel'
+import { StudioVoiceWorkspace } from './components/studio-voice-workspace'
 import { StudioLayout } from './components/studio-layout'
 import { StudioPromptBar } from './components/studio-prompt-bar'
-import { StudioVoicePlaceholder } from './components/studio-voice-placeholder'
 import {
   STUDIO_IMAGE_DEFAULT_MODEL,
   STUDIO_IMAGE_DEFAULT_SIZE,
   STUDIO_VIDEO_DEFAULT_MODEL,
+  STUDIO_VOICE_DEFAULT_MODEL,
+  STUDIO_VOICE_DEFAULT_VOICE,
+  STUDIO_VOICE_SPEED,
+  STUDIO_VOICE_VOLUME,
 } from './constants'
 import {
   useStudioChatAugmentor,
@@ -56,7 +61,12 @@ import {
   studioVideoContentUrl,
   toVideoErrorMessage,
 } from './lib/video-request'
-import type { StudioImageState, StudioVideoState } from './types'
+import { synthesizeStudioVoice, toVoiceErrorMessage } from './lib/voice-request'
+import type {
+  StudioImageState,
+  StudioVideoState,
+  StudioVoiceState,
+} from './types'
 
 export function StudioShell() {
   const pathname = useRouterState({
@@ -87,6 +97,10 @@ export function StudioShell() {
   const videoTaskRef = useRef<string | null>(null)
   // 视频 object URL（<video> 无法携带鉴权头，故先取 Blob 再播放）
   const videoBlobUrlRef = useRef<string | null>(null)
+  const [voiceState, setVoiceState] = useState<StudioVoiceState>({
+    status: 'idle',
+  })
+  const voiceBlobUrlRef = useRef<string | null>(null)
   const thinkingBudget = useStudioThinkingBudget()
   const modeConfig = useStudioModeConfig()
   const showThinkingBudget = modelSupportsThinkingBudget(config.model)
@@ -276,12 +290,79 @@ export function StudioShell() {
     [modeConfig.configs.video]
   )
 
+  // 语音合成：登录态同步返回音频（音色/语速走 DTO，音量增益走 metadata）
+  const runVoiceSynthesis = useCallback(
+    async (text: string) => {
+      const voiceConfig = (modeConfig.configs.voice ??
+        {}) as Record<string, unknown>
+      const model =
+        typeof voiceConfig.model === 'string' &&
+        voiceConfig.model.trim() !== ''
+          ? voiceConfig.model.trim()
+          : STUDIO_VOICE_DEFAULT_MODEL
+      const voice =
+        typeof voiceConfig.voice === 'string' &&
+        voiceConfig.voice.trim() !== ''
+          ? voiceConfig.voice.trim()
+          : STUDIO_VOICE_DEFAULT_VOICE
+      const rawSpeed = voiceConfig.speed
+      const speed =
+        typeof rawSpeed === 'string' && rawSpeed.trim() !== ''
+          ? Number(rawSpeed)
+          : typeof rawSpeed === 'number'
+            ? rawSpeed
+            : STUDIO_VOICE_SPEED.defaultValue
+      const rawVolume = voiceConfig.volume_gain
+      const volumeGain =
+        typeof rawVolume === 'string' && rawVolume.trim() !== ''
+          ? Number(rawVolume)
+          : typeof rawVolume === 'number'
+            ? rawVolume
+            : STUDIO_VOICE_VOLUME.defaultValue
+
+      setVoiceState({ status: 'synthesizing', text, voice, speed, volumeGain })
+      try {
+        const result = await synthesizeStudioVoice({
+          model,
+          input: text,
+          voice,
+          speed,
+          volumeGain,
+        })
+        if (voiceBlobUrlRef.current) {
+          URL.revokeObjectURL(voiceBlobUrlRef.current)
+        }
+        voiceBlobUrlRef.current = result.url
+        setVoiceState({
+          status: 'success',
+          text,
+          voice,
+          speed,
+          volumeGain,
+          url: result.url,
+          elapsed: result.elapsed,
+        })
+      } catch (error) {
+        setVoiceState({
+          status: 'error',
+          text,
+          error: toVoiceErrorMessage(error),
+        })
+      }
+    },
+    [modeConfig.configs.voice]
+  )
+
   // 卸载时停止轮询并释放 object URL
   useEffect(() => () => {
     videoTaskRef.current = null
     if (videoBlobUrlRef.current) {
       URL.revokeObjectURL(videoBlobUrlRef.current)
       videoBlobUrlRef.current = null
+    }
+    if (voiceBlobUrlRef.current) {
+      URL.revokeObjectURL(voiceBlobUrlRef.current)
+      voiceBlobUrlRef.current = null
     }
   }, [])
 
@@ -320,10 +401,30 @@ export function StudioShell() {
         state={videoState}
       />
     )
-  if (mode === 'voice') workspace = <StudioVoicePlaceholder />
+  if (mode === 'voice')
+    workspace = (
+      <StudioVoiceWorkspace
+        onRegenerate={() => {
+          if (voiceState.text) void runVoiceSynthesis(voiceState.text)
+        }}
+        state={voiceState}
+      />
+    )
 
   const parameterPanel =
-    mode === 'video' ? (
+    mode === 'voice' ? (
+      <StudioVoiceParameterPanel
+        config={config}
+        disabled={voiceState.status === 'synthesizing'}
+        groups={groups}
+        models={models}
+        onConfigChange={updateConfig}
+        onGroupChange={(value) => updateConfig('group', value)}
+        onModelChange={(value) => modeConfig.update('voice', { model: value })}
+        onVoiceConfigChange={(patch) => modeConfig.update('voice', patch)}
+        voiceConfig={(modeConfig.configs.voice ?? {}) as Record<string, unknown>}
+      />
+    ) : mode === 'video' ? (
       <StudioVideoParameterPanel
         config={config}
         disabled={
@@ -381,7 +482,9 @@ export function StudioShell() {
                 : mode === 'video'
                   ? videoState.status === 'submitting' ||
                     videoState.status === 'generating'
-                  : isGenerating
+                  : mode === 'voice'
+                    ? voiceState.status === 'synthesizing'
+                    : isGenerating
             }
             mode={mode}
             onImageSubmit={
@@ -399,6 +502,13 @@ export function StudioShell() {
               mode === 'video'
                 ? (text) => {
                     void runVideoGeneration(text)
+                  }
+                : undefined
+            }
+            onVoiceSubmit={
+              mode === 'voice'
+                ? (text) => {
+                    void runVoiceSynthesis(text)
                   }
                 : undefined
             }

@@ -70,6 +70,9 @@ func SetRelayRouter(router *gin.Engine) {
 		// 体验中心「图像生成」模式的登录态入口（mibi-devel 定制，见
 		// controller/playground_image.go 与 docs/tech/upstream-fork-ledger.md）
 		playgroundRouter.POST("/images/generations", controller.PlaygroundImage)
+		// 体验中心「语音合成」模式的登录态入口（mibi-devel 定制，
+		// 见 controller/playground_audio.go）
+		playgroundRouter.POST("/audio/speech", controller.PlaygroundAudio)
 	}
 
 	// 体验中心「视频生成」模式的登录态入口（mibi-devel 定制，见 controller/playground_video.go）。

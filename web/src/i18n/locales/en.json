@@ -7321,6 +7321,11 @@
     "Image generation failed": "Image generation failed",
     "Upload Image": "Upload Image",
     "Video generation failed": "Video generation failed",
-    "Image-to-video is not available yet": "Image-to-video is not available yet"
+    "Image-to-video is not available yet": "Image-to-video is not available yet",
+    "Voice": "Voice",
+    "Speed": "Speed",
+    "Volume Gain": "Volume Gain",
+    "Synthesizing...": "Synthesizing...",
+    "Voice synthesis failed": "Voice synthesis failed"
   }
 }

@@ -61,3 +61,17 @@ export type StudioVideoState = {
   progress?: number
   error?: string
 }
+
+/** 语音合成工作区状态（同步接口：合成中 → 成功/失败） */
+export type StudioVoiceStatus = 'idle' | 'synthesizing' | 'success' | 'error'
+
+export type StudioVoiceState = {
+  status: StudioVoiceStatus
+  url?: string
+  text?: string
+  voice?: string
+  speed?: number
+  volumeGain?: number
+  elapsed?: number
+  error?: string
+}

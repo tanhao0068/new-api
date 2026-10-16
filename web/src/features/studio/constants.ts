@@ -129,3 +129,30 @@ export const STUDIO_VIDEO_PARAM_DEFAULTS: Record<string, unknown> = {
   seed: '',
   negative_prompt: '',
 }
+
+/** 语音合成默认模型（自建 Edge-TTS 适配器，运行于 192.168.0.43:19030） */
+export const STUDIO_VOICE_DEFAULT_MODEL = 'mibi/edge-tts'
+
+/** 音色清单（原型 REQ-013 的 4 个音色 → 实际上游可得音色；详见技术方案 §十）。
+ *  「龙小诚/龙小淳」为微软多语言音色，Edge TTS 不可得，故以其余可得音色替代。 */
+export const STUDIO_VOICE_OPTIONS = [
+  { value: 'zh-CN-XiaoxiaoNeural', label: '晓晓（女声·默认）' },
+  { value: 'zh-CN-YunxiNeural', label: '云希（男声）' },
+  { value: 'zh-CN-YunyangNeural', label: '云扬（男声·新闻）' },
+  { value: 'zh-CN-XiaoyiNeural', label: '晓伊（女声）' },
+  { value: 'zh-CN-YunjianNeural', label: '云健（男声·解说）' },
+  { value: 'zh-CN-liaoning-XiaobeiNeural', label: '小北（东北官话）' },
+] as const
+
+export const STUDIO_VOICE_DEFAULT_VOICE = 'zh-CN-XiaoxiaoNeural'
+
+/** 原型口径：语速 0.5–2.0（步长 0.1，默认 1.0）；音量增益 -12–12 dB（步长 1，默认 0） */
+export const STUDIO_VOICE_SPEED = { min: 0.5, max: 2.0, step: 0.1, defaultValue: 1.0 } as const
+export const STUDIO_VOICE_VOLUME = { min: -12, max: 12, step: 1, defaultValue: 0 } as const
+
+export const STUDIO_VOICE_PARAM_DEFAULTS: Record<string, unknown> = {
+  model: STUDIO_VOICE_DEFAULT_MODEL,
+  voice: STUDIO_VOICE_DEFAULT_VOICE,
+  speed: STUDIO_VOICE_SPEED.defaultValue,
+  volume_gain: STUDIO_VOICE_VOLUME.defaultValue,
+}

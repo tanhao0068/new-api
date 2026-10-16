@@ -7321,6 +7321,11 @@
     "Image generation failed": "画像生成に失敗しました",
     "Upload Image": "画像をアップロード",
     "Video generation failed": "動画生成に失敗しました",
-    "Image-to-video is not available yet": "画像から動画は未対応です"
+    "Image-to-video is not available yet": "画像から動画は未対応です",
+    "Voice": "音色",
+    "Speed": "速度",
+    "Volume Gain": "音量ゲイン",
+    "Synthesizing...": "合成中...",
+    "Voice synthesis failed": "音声合成に失敗しました"
   }
 }

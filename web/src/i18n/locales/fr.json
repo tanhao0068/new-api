@@ -7321,6 +7321,11 @@
     "Image generation failed": "Échec de la génération d'image",
     "Upload Image": "Téléverser une image",
     "Video generation failed": "Échec de la génération de vidéo",
-    "Image-to-video is not available yet": "Image-vers-vidéo bientôt disponible"
+    "Image-to-video is not available yet": "Image-vers-vidéo bientôt disponible",
+    "Voice": "Voix",
+    "Speed": "Vitesse",
+    "Volume Gain": "Gain du volume",
+    "Synthesizing...": "Synthèse...",
+    "Voice synthesis failed": "Échec de la synthèse vocale"
   }
 }

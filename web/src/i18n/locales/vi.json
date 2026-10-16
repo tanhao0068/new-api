@@ -7321,6 +7321,11 @@
     "Image generation failed": "Tạo ảnh thất bại",
     "Upload Image": "Tải ảnh lên",
     "Video generation failed": "Tạo video thất bại",
-    "Image-to-video is not available yet": "Chưa hỗ trợ tạo video từ ảnh"
+    "Image-to-video is not available yet": "Chưa hỗ trợ tạo video từ ảnh",
+    "Voice": "Giọng",
+    "Speed": "Tốc độ",
+    "Volume Gain": "Tăng âm lượng",
+    "Synthesizing...": "Đang tổng hợp...",
+    "Voice synthesis failed": "Tổng hợp giọng nói thất bại"
   }
 }

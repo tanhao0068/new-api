@@ -7321,6 +7321,11 @@
     "Image generation failed": "圖像生成失敗",
     "Upload Image": "上傳圖片",
     "Video generation failed": "影片生成失敗",
-    "Image-to-video is not available yet": "暫無圖生影片模型"
+    "Image-to-video is not available yet": "暫無圖生影片模型",
+    "Voice": "音色",
+    "Speed": "語速",
+    "Volume Gain": "音量增益",
+    "Synthesizing...": "合成中…",
+    "Voice synthesis failed": "語音合成失敗"
   }
 }

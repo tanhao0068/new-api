@@ -1,0 +1,18 @@
+[Unit]
+Description=Mibi Edge-TTS Adapter (OpenAI-compatible /v1/audio/speech)
+Documentation=file:///home/test/data/mibi-api/integrations/edge-tts-adapter/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/test/data/mibi-api/integrations/edge-tts-adapter
+# 调试期上游：edge-tts（免费、免密钥、非官方接口）
+ExecStart=/home/test/.hermes/installs/be0c025614459603/environments/a6c63dd7b400415bbf097b7274374ac4/venv/bin/python3 \
+    /home/test/data/mibi-api/integrations/edge-tts-adapter/adapter.py \
+    --listen 0.0.0.0 --port 19020 --max-concurrency 4
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

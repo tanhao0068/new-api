@@ -7321,6 +7321,11 @@
     "Image generation failed": "Не удалось сгенерировать изображение",
     "Upload Image": "Загрузить изображение",
     "Video generation failed": "Не удалось сгенерировать видео",
-    "Image-to-video is not available yet": "Генерация видео из изображения пока недоступна"
+    "Image-to-video is not available yet": "Генерация видео из изображения пока недоступна",
+    "Voice": "Голос",
+    "Speed": "Скорость",
+    "Volume Gain": "Усиление громкости",
+    "Synthesizing...": "Синтез...",
+    "Voice synthesis failed": "Не удалось синтезировать речь"
   }
 }

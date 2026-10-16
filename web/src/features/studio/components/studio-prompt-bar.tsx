@@ -65,6 +65,8 @@ type StudioPromptBarProps = {
   onImageSubmit?: (text: string) => void
   /** 视频模式：提交生成任务（异步任务，客户端轮询） */
   onVideoSubmit?: (text: string) => void
+  /** 语音模式：提交合成（同步返回音频） */
+  onVoiceSubmit?: (text: string) => void
   onSend?: (text: string) => void
   onStop?: () => void
 }
@@ -78,7 +80,9 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
     props.mode === 'image' && !props.disabled && Boolean(props.onImageSubmit)
   const videoEnabled =
     props.mode === 'video' && !props.disabled && Boolean(props.onVideoSubmit)
-  const inputEnabled = chatEnabled || imageEnabled || videoEnabled
+  const voiceEnabled =
+    props.mode === 'voice' && !props.disabled && Boolean(props.onVoiceSubmit)
+  const inputEnabled = chatEnabled || imageEnabled || videoEnabled || voiceEnabled
 
   useEffect(() => {
     setText('')
@@ -103,7 +107,9 @@ export function StudioPromptBar(props: StudioPromptBarProps) {
       props.isGenerating
     )
     if (!submittableText) return
-    if (videoEnabled) {
+    if (voiceEnabled) {
+      props.onVoiceSubmit?.(submittableText)
+    } else if (videoEnabled) {
       props.onVideoSubmit?.(submittableText)
     } else if (imageEnabled) {
       props.onImageSubmit?.(submittableText)
