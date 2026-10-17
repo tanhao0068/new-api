@@ -7326,6 +7326,17 @@
     "Volume Gain": "Tăng âm lượng",
     "Synthesizing...": "Đang tổng hợp...",
     "Voice synthesis failed": "Tổng hợp giọng nói thất bại",
-    "Online experience incurs usage-based fees": "Trải nghiệm trực tuyến sẽ tính phí theo lượng sử dụng"
+    "Online experience incurs usage-based fees": "Trải nghiệm trực tuyến sẽ tính phí theo lượng sử dụng",
+    "Studio Model Types": "Loại mô hình của Studio",
+    "Model type": "Loại mô hình",
+    "Auto (by name)": "Tự động (theo tên)",
+    "Auto detected": "Tự động nhận diện",
+    "Failed to load model list": "Không tải được danh sách mô hình",
+    "No models configured yet. Add a channel model first.": "Chưa có mô hình nào. Hãy thêm mô hình vào kênh trước.",
+    "Clear all overrides": "Xoá tất cả chỉ định",
+    "Model types saved": "Đã lưu loại mô hình",
+    "Model types reset": "Đã xoá chỉ định",
+    "Specify which type each model belongs to in the Studio (text / image / video / voice). Model selection in each mode only lists models of the matching type. Leave \"Auto\" to infer from the model name.": "Chỉ định loại của từng mô hình trong Studio (văn bản / hình ảnh / video / giọng nói). Mỗi chế độ chỉ liệt kê mô hình đúng loại. Chọn \"Tự động\" để nhận diện theo tên mô hình.",
+    "Only explicitly chosen rows are stored; Auto rows keep following the name-based inference.": "Chỉ lưu các dòng được chỉ định rõ ràng; các dòng \"Tự động\" vẫn nhận diện theo tên mô hình."
   }
 }

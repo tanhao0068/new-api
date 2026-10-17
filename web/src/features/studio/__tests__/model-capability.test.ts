@@ -97,3 +97,40 @@ test('过滤结果为空时回退为完整列表（不让选择器变空）', ()
   // 定价接口不可用（无端点类型映射）时同样按文本模型处理，不会清空
   expect(filterModelsByMode(models, 'chat', new Map())).toEqual(models)
 })
+
+// 管理后台「模型类型」登记表优先级最高（2026-10-16 新增能力）
+test('后台登记表覆盖前端声明与自动推断', () => {
+  // 后台把 edge-tts 指定为 text → 即使内置声明是 voice 也以后台为准
+  expect(
+    resolveModelCapabilities('mibi/edge-tts', ['openai'], { 'mibi/edge-tts': 'text' })
+  ).toEqual(['text'])
+  // 后台可为平台无法识别的模型指定类型
+  expect(
+    resolveModelCapabilities('acme/unknown-model', ['openai'], {
+      'acme/unknown-model': 'video',
+    })
+  ).toEqual(['video'])
+  // 非法取值被忽略，退回下一级（内置声明 / 端点类型 / 名称规则）
+  expect(
+    resolveModelCapabilities('mibi/edge-tts', ['openai'], { 'mibi/edge-tts': 'bogus' })
+  ).toEqual(['voice'])
+  expect(
+    resolveModelCapabilities('cohere/north-mini-code:free', ['openai'], {})
+  ).toEqual(['text'])
+})
+
+test('过滤函数支持后台登记表（四模式按后台配置生效）', () => {
+  const models = opts('mibi/qwen-image', 'mibi/edge-tts', 'text-model')
+  const types = new Map<string, string[]>([
+    ['mibi/qwen-image', ['image-generation', 'openai']],
+    ['mibi/edge-tts', ['openai']],
+    ['text-model', ['openai']],
+  ])
+  // 后台把图像模型改判为文本 → 文本列表应包含它
+  const overrides = { 'mibi/qwen-image': 'text' }
+  expect(filterModelsByMode(models, 'chat', types, overrides).map((m) => m.value))
+    .toEqual(['mibi/qwen-image', 'text-model'])
+  // 未覆盖时图像列表仍只有图像模型
+  expect(filterModelsByMode(models, 'image', types, {}).map((m) => m.value))
+    .toEqual(['mibi/qwen-image'])
+})

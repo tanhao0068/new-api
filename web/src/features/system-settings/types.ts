@@ -227,6 +227,8 @@ export type ContentSettings = {
 }
 
 export type ModelSettings = {
+  /** 体验中心模型类型登记表（JSON 对象：模型名 → text/image/video/voice） */
+  'studio.model_capabilities': string
   'global.pass_through_request_enabled': boolean
   'global.thinking_model_blacklist': string
   'global.chat_completions_to_responses_policy': string

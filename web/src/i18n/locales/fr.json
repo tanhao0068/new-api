@@ -7326,6 +7326,17 @@
     "Volume Gain": "Gain du volume",
     "Synthesizing...": "Synthèse...",
     "Voice synthesis failed": "Échec de la synthèse vocale",
-    "Online experience incurs usage-based fees": "L'expérience en ligne entraîne des frais à l'usage"
+    "Online experience incurs usage-based fees": "L'expérience en ligne entraîne des frais à l'usage",
+    "Studio Model Types": "Types de modèles du Studio",
+    "Model type": "Type de modèle",
+    "Auto (by name)": "Auto (par nom)",
+    "Auto detected": "Détecté automatiquement",
+    "Failed to load model list": "Échec du chargement de la liste des modèles",
+    "No models configured yet. Add a channel model first.": "Aucun modèle configuré. Ajoutez d'abord un modèle de canal.",
+    "Clear all overrides": "Effacer toutes les substitutions",
+    "Model types saved": "Types de modèles enregistrés",
+    "Model types reset": "Substitutions effacées",
+    "Specify which type each model belongs to in the Studio (text / image / video / voice). Model selection in each mode only lists models of the matching type. Leave \"Auto\" to infer from the model name.": "Indiquez le type de chaque modèle dans le Studio (texte / image / vidéo / voix). La sélection de modèle de chaque mode n'affiche que les modèles du type correspondant. Laissez « Auto » pour déduire depuis le nom.",
+    "Only explicitly chosen rows are stored; Auto rows keep following the name-based inference.": "Seules les lignes explicitement choisies sont enregistrées ; les lignes « Auto » suivent la déduction par nom."
   }
 }

@@ -7326,6 +7326,17 @@
     "Volume Gain": "音量ゲイン",
     "Synthesizing...": "合成中...",
     "Voice synthesis failed": "音声合成に失敗しました",
-    "Online experience incurs usage-based fees": "オンライン体験は使用量に応じて課金されます"
+    "Online experience incurs usage-based fees": "オンライン体験は使用量に応じて課金されます",
+    "Studio Model Types": "スタジオのモデル種別",
+    "Model type": "モデル種別",
+    "Auto (by name)": "自動（名前から）",
+    "Auto detected": "自動判定",
+    "Failed to load model list": "モデル一覧の読み込みに失敗しました",
+    "No models configured yet. Add a channel model first.": "モデルが未設定です。先にチャネルでモデルを追加してください。",
+    "Clear all overrides": "すべての指定をクリア",
+    "Model types saved": "モデル種別を保存しました",
+    "Model types reset": "指定をクリアしました",
+    "Specify which type each model belongs to in the Studio (text / image / video / voice). Model selection in each mode only lists models of the matching type. Leave \"Auto\" to infer from the model name.": "各モデルがスタジオで属する種別（テキスト / 画像 / 動画 / 音声）を指定します。各モードのモデル選択には該当種別のみが表示されます。「自動」の場合はモデル名から判定します。",
+    "Only explicitly chosen rows are stored; Auto rows keep following the name-based inference.": "明示的に指定した行のみ保存されます。「自動」の行はモデル名による判定を継続します。"
   }
 }

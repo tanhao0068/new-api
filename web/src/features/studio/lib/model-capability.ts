@@ -91,13 +91,20 @@ const NAME_RULES: Array<[RegExp, StudioModelCapability]> = [
 /**
  * 解析单个模型的能力集合。
  *
- * 优先级：显式声明 > endpoint type > 名称规则；名称规则命中的"非文本"能力
+ * 优先级：管理后台登记表（overrides）> 前端显式声明 > endpoint type > 名称规则；名称规则命中的"非文本"能力
  * 会把模型从文本列表中排除（例如 `xxx-image` 不应出现在文本对话里）。
  */
 export function resolveModelCapabilities(
   modelName: string,
-  endpointTypes: string[] = []
+  endpointTypes: string[] = [],
+  overrides: Record<string, string> = {}
 ): StudioModelCapability[] {
+  // ① 管理后台「模型类型」登记表（最高优先级，运营可维护）
+  const override = overrides[modelName]
+  if (override === 'text' || override === 'image' || override === 'video' || override === 'voice') {
+    return [override]
+  }
+  // ② 前端内置声明（平台无法表达的能力，作为后台未配置时的兜底）
   const declared = DECLARED_MODEL_CAPABILITIES[modelName]
   if (declared) return declared
 
@@ -121,9 +128,10 @@ export function resolveModelCapabilities(
 export function modelSupportsMode(
   modelName: string,
   mode: StudioModelMode,
-  endpointTypes: string[] = []
+  endpointTypes: string[] = [],
+  overrides: Record<string, string> = {}
 ): boolean {
-  return resolveModelCapabilities(modelName, endpointTypes).includes(
+  return resolveModelCapabilities(modelName, endpointTypes, overrides).includes(
     MODE_CAPABILITY[mode]
   )
 }
@@ -137,13 +145,15 @@ export function modelSupportsMode(
 export function filterModelsByMode(
   models: ModelOption[],
   mode: StudioModelMode,
-  endpointTypesByModel: Map<string, string[]> = new Map()
+  endpointTypesByModel: Map<string, string[]> = new Map(),
+  overrides: Record<string, string> = {}
 ): ModelOption[] {
   const filtered = models.filter((model) =>
     modelSupportsMode(
       model.value,
       mode,
-      endpointTypesByModel.get(model.value) ?? []
+      endpointTypesByModel.get(model.value) ?? [],
+      overrides
     )
   )
   return filtered.length > 0 ? filtered : models

@@ -28,6 +28,9 @@ func SetApiRouter(router *gin.Engine) {
 		apiRouter.GET("/status", controller.GetStatus)
 		apiRouter.GET("/uptime/status", controller.GetUptimeKumaStatus)
 		apiRouter.GET("/models", middleware.UserAuth(), controller.DashboardListModels)
+		// 体验中心：模型类型登记表（mibi-devel 定制，见 controller/studio_capability.go
+		// 与 docs/tech/upstream-fork-ledger.md）。登录用户只读；写走通用 PUT /api/option/。
+		apiRouter.GET("/studio/model_capabilities", middleware.UserAuth(), controller.GetStudioModelCapabilities)
 		apiRouter.GET("/status/test", middleware.AdminAuth(), controller.TestStatus)
 		apiRouter.GET("/notice", controller.GetNotice)
 		apiRouter.GET("/user-agreement", controller.GetUserAgreement)

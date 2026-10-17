@@ -7326,6 +7326,17 @@
     "Volume Gain": "Усиление громкости",
     "Synthesizing...": "Синтез...",
     "Voice synthesis failed": "Не удалось синтезировать речь",
-    "Online experience incurs usage-based fees": "Онлайн-испытание оплачивается по объёму использования"
+    "Online experience incurs usage-based fees": "Онлайн-испытание оплачивается по объёму использования",
+    "Studio Model Types": "Типы моделей Studio",
+    "Model type": "Тип модели",
+    "Auto (by name)": "Авто (по имени)",
+    "Auto detected": "Определено автоматически",
+    "Failed to load model list": "Не удалось загрузить список моделей",
+    "No models configured yet. Add a channel model first.": "Модели не настроены. Сначала добавьте модель в канале.",
+    "Clear all overrides": "Сбросить все переопределения",
+    "Model types saved": "Типы моделей сохранены",
+    "Model types reset": "Переопределения сброшены",
+    "Specify which type each model belongs to in the Studio (text / image / video / voice). Model selection in each mode only lists models of the matching type. Leave \"Auto\" to infer from the model name.": "Укажите тип каждого модель в Studio (текст / изображение / видео / голос). В каждом режиме показываются только модели соответствующего типа. «Авто» — определение по имени модели.",
+    "Only explicitly chosen rows are stored; Auto rows keep following the name-based inference.": "Сохраняются только явно выбранные строки; строки «Авто» продолжают определяться по имени."
   }
 }

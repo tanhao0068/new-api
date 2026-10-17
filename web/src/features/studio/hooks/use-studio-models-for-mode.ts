@@ -16,9 +16,11 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
+import { useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 
 import { usePricingData } from '@/features/pricing/hooks/use-pricing-data'
+import { api } from '@/lib/http-client'
 import type { ModelOption } from '@/features/playground/types'
 
 import { filterModelsByMode, type StudioModelMode } from '../lib/model-capability'
@@ -38,6 +40,17 @@ export function useStudioModelsForMode(
   models: ModelOption[]
 ): ModelOption[] {
   const { models: pricingModels } = usePricingData()
+  // 管理后台维护的模型类型登记表（最高优先级）
+  const { data: capabilityData } = useQuery({
+    queryKey: ['studio-model-capabilities'],
+    queryFn: async () => {
+      const res = await api.get<{
+        data: { capabilities: Record<string, string> }
+      }>('/api/studio/model_capabilities')
+      return res.data.data.capabilities ?? {}
+    },
+    staleTime: 5 * 60 * 1000,
+  })
 
   const endpointTypesByModel = useMemo(() => {
     const map = new Map<string, string[]>()
@@ -48,7 +61,13 @@ export function useStudioModelsForMode(
   }, [pricingModels])
 
   return useMemo(
-    () => filterModelsByMode(models, mode, endpointTypesByModel),
-    [models, mode, endpointTypesByModel]
+    () =>
+      filterModelsByMode(
+        models,
+        mode,
+        endpointTypesByModel,
+        capabilityData ?? {}
+      ),
+    [models, mode, endpointTypesByModel, capabilityData]
   )
 }

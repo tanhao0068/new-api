@@ -23,6 +23,7 @@ import { ClaudeSettingsCard } from './claude-settings-card'
 import { GeminiSettingsCard } from './gemini-settings-card'
 import { GlobalSettingsCard } from './global-settings-card'
 import { GrokSettingsCard } from './grok-settings-card'
+import { ModelCapabilityCard } from './model-capability-card'
 
 function formatJsonForEditor(value: string, fallback: string) {
   const raw = (value ?? '').toString().trim()
@@ -117,6 +118,16 @@ const MODELS_SECTIONS = [
           'grok.violation_deduction_amount':
             settings['grok.violation_deduction_amount'] ?? 0.05,
         }}
+      />
+    ),
+  },
+
+  {
+    id: 'studio-capability',
+    titleKey: 'Studio Model Types',
+    build: (settings: ModelSettings) => (
+      <ModelCapabilityCard
+        rawValue={(settings as Record<string, string>)['studio.model_capabilities']}
       />
     ),
   },

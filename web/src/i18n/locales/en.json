@@ -7326,6 +7326,17 @@
     "Volume Gain": "Volume Gain",
     "Synthesizing...": "Synthesizing...",
     "Voice synthesis failed": "Voice synthesis failed",
-    "Online experience incurs usage-based fees": "Online experience incurs usage-based fees"
+    "Online experience incurs usage-based fees": "Online experience incurs usage-based fees",
+    "Studio Model Types": "Studio Model Types",
+    "Model type": "Model type",
+    "Auto (by name)": "Auto (by name)",
+    "Auto detected": "Auto detected",
+    "Failed to load model list": "Failed to load model list",
+    "No models configured yet. Add a channel model first.": "No models configured yet. Add a channel model first.",
+    "Clear all overrides": "Clear all overrides",
+    "Model types saved": "Model types saved",
+    "Model types reset": "Model types reset",
+    "Specify which type each model belongs to in the Studio (text / image / video / voice). Model selection in each mode only lists models of the matching type. Leave \"Auto\" to infer from the model name.": "Specify which type each model belongs to in the Studio (text / image / video / voice). Model selection in each mode only lists models of the matching type. Leave \"Auto\" to infer from the model name.",
+    "Only explicitly chosen rows are stored; Auto rows keep following the name-based inference.": "Only explicitly chosen rows are stored; Auto rows keep following the name-based inference."
   }
 }

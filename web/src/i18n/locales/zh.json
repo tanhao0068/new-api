@@ -7326,6 +7326,17 @@
     "Volume Gain": "音量增益",
     "Synthesizing...": "合成中…",
     "Voice synthesis failed": "语音合成失败",
-    "Online experience incurs usage-based fees": "在线体验将按照用量产生费用"
+    "Online experience incurs usage-based fees": "在线体验将按照用量产生费用",
+    "Studio Model Types": "体验中心模型类型",
+    "Model type": "模型类型",
+    "Auto (by name)": "自动推断",
+    "Auto detected": "自动识别",
+    "Failed to load model list": "加载模型列表失败",
+    "No models configured yet. Add a channel model first.": "尚未配置任何模型，请先在渠道中添加模型。",
+    "Clear all overrides": "清空所有指定",
+    "Model types saved": "模型类型已保存",
+    "Model types reset": "已清空指定，恢复自动推断",
+    "Specify which type each model belongs to in the Studio (text / image / video / voice). Model selection in each mode only lists models of the matching type. Leave \"Auto\" to infer from the model name.": "指定每个模型在体验中心所属的类型（文本 / 生图 / 生视频 / 语音）。各模式的模型选择区只列出对应类型的模型；保持「自动推断」则按模型名识别。",
+    "Only explicitly chosen rows are stored; Auto rows keep following the name-based inference.": "仅保存显式指定的行；保持「自动推断」的行仍按模型名识别。"
   }
 }
