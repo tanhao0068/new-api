@@ -61,6 +61,7 @@ import {
   studioVideoContentUrl,
   toVideoErrorMessage,
 } from './lib/video-request'
+import { useStudioModelsForMode } from './hooks/use-studio-models-for-mode'
 import { synthesizeStudioVoice, toVoiceErrorMessage } from './lib/voice-request'
 import type {
   StudioImageState,
@@ -87,6 +88,8 @@ export function StudioShell() {
     updateParameterEnabled,
     clearMessages,
   } = usePlaygroundState()
+  // 模型按模式过滤：文本模式只展示文本模型，图像/视频/语音各只展示对应能力的模型
+  const modelsForMode = useStudioModelsForMode(mode, models)
   const [imageState, setImageState] = useState<StudioImageState>({
     status: 'idle',
   })
@@ -417,7 +420,7 @@ export function StudioShell() {
         config={config}
         disabled={voiceState.status === 'synthesizing'}
         groups={groups}
-        models={models}
+        models={modelsForMode}
         onConfigChange={updateConfig}
         onGroupChange={(value) => updateConfig('group', value)}
         onModelChange={(value) => modeConfig.update('voice', { model: value })}
@@ -432,7 +435,7 @@ export function StudioShell() {
           videoState.status === 'generating'
         }
         groups={groups}
-        models={models}
+        models={modelsForMode}
         onConfigChange={updateConfig}
         onGroupChange={(value) => updateConfig('group', value)}
         onModelChange={(value) => modeConfig.update('video', { model: value })}
@@ -445,7 +448,7 @@ export function StudioShell() {
         disabled={imageState.status === 'generating'}
         groups={groups}
         imageConfig={(modeConfig.configs.image ?? {}) as Record<string, unknown>}
-        models={models}
+        models={modelsForMode}
         onConfigChange={updateConfig}
         onGroupChange={(value) => updateConfig('group', value)}
         onImageConfigChange={(patch) => modeConfig.update('image', patch)}
@@ -456,7 +459,7 @@ export function StudioShell() {
         config={config}
         disabled={isGenerating}
         groups={groups}
-        models={models}
+        models={modelsForMode}
         onClearSession={handleClearSession}
         onConfigChange={updateConfig}
         onGroupChange={(value) => updateConfig('group', value)}
