@@ -81,6 +81,14 @@ test('desktop layout shows the mode title, billing hint, and a fixed parameter c
 
   expect(screen.getByRole('heading', { name: 'Text Chat' })).toBeVisible()
   expect(screen.getByText('gpt-4o')).toBeVisible()
+  // 顶栏三段式（2026-10-16 老板指令）：模型名居左、收费提示居中、设置居右
+  expect(screen.getByTestId('studio-top-bar')).toHaveClass('grid')
+  expect(screen.getByTestId('studio-billing-hint')).toHaveClass(
+    'justify-center'
+  )
+  expect(
+    screen.getByText('Online experience incurs usage-based fees')
+  ).toBeVisible()
   expect(
     screen.getByRole('button', { name: 'System Settings' })
   ).toHaveAttribute('href', '/system-settings/site')
