@@ -4184,7 +4184,6 @@
     "Not installed": "Not installed",
     "Not listed": "Not listed",
     "Not matched": "Not matched",
-    "Online experience incurs usage-based fees, see Model Details": "Online experience incurs usage-based fees, see Model Details",
     "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}": "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}",
     "Not provided by this source": "Not provided by this source",
     "Not recorded": "Not recorded",
@@ -7326,6 +7325,7 @@
     "Speed": "Speed",
     "Volume Gain": "Volume Gain",
     "Synthesizing...": "Synthesizing...",
-    "Voice synthesis failed": "Voice synthesis failed"
+    "Voice synthesis failed": "Voice synthesis failed",
+    "Online experience incurs usage-based fees": "Online experience incurs usage-based fees"
   }
 }

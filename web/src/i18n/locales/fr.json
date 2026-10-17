@@ -4184,7 +4184,6 @@
     "Not installed": "Non installé",
     "Not listed": "Masqué",
     "Not matched": "Aucune correspondance",
-    "Online experience incurs usage-based fees, see Model Details": "L'expérience en ligne est facturée à l'usage, voir Détails du modèle",
     "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}": "Recharge en ligne réussie, montant ajouté : {{quota}}, montant payé : {{amount}}",
     "Not provided by this source": "Non fourni par cette source",
     "Not recorded": "Non enregistré",
@@ -7326,6 +7325,7 @@
     "Speed": "Vitesse",
     "Volume Gain": "Gain du volume",
     "Synthesizing...": "Synthèse...",
-    "Voice synthesis failed": "Échec de la synthèse vocale"
+    "Voice synthesis failed": "Échec de la synthèse vocale",
+    "Online experience incurs usage-based fees": "L'expérience en ligne entraîne des frais à l'usage"
   }
 }

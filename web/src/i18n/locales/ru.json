@@ -4184,7 +4184,6 @@
     "Not installed": "Не установлен",
     "Not listed": "Скрыта",
     "Not matched": "Не совпало",
-    "Online experience incurs usage-based fees, see Model Details": "Онлайн-опыт тарифицируется по использованию, см. сведения о модели",
     "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}": "Онлайн-пополнение выполнено, зачислено: {{quota}}, сумма оплаты: {{amount}}",
     "Not provided by this source": "Не предоставлено этим источником",
     "Not recorded": "Не записано",
@@ -7326,6 +7325,7 @@
     "Speed": "Скорость",
     "Volume Gain": "Усиление громкости",
     "Synthesizing...": "Синтез...",
-    "Voice synthesis failed": "Не удалось синтезировать речь"
+    "Voice synthesis failed": "Не удалось синтезировать речь",
+    "Online experience incurs usage-based fees": "Онлайн-испытание оплачивается по объёму использования"
   }
 }

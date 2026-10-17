@@ -61,9 +61,8 @@ export function StudioTopBar(props: StudioTopBarProps) {
       <p className='text-muted-foreground flex min-w-0 flex-1 items-center gap-1.5 text-xs'>
         <TriangleAlert aria-hidden='true' className='size-3.5 shrink-0' />
         <span className='truncate'>
-          {t(
-            'Online experience incurs usage-based fees, see Model Details'
-          )}
+          {/* 计费提示：「模型详情」链接一期隐藏，故文案不再提示「详见 模型详情」 */}
+          {t('Online experience incurs usage-based fees')}
         </span>
       </p>
       <Button

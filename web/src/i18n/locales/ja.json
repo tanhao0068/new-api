@@ -4184,7 +4184,6 @@
     "Not installed": "未インストール",
     "Not listed": "非表示",
     "Not matched": "不一致",
-    "Online experience incurs usage-based fees, see Model Details": "オンライン体験は従量課金です。モデル詳細を参照",
     "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}": "オンラインチャージが完了しました。追加額：{{quota}}、支払額：{{amount}}",
     "Not provided by this source": "このソースでは提供されていません",
     "Not recorded": "記録なし",
@@ -7326,6 +7325,7 @@
     "Speed": "速度",
     "Volume Gain": "音量ゲイン",
     "Synthesizing...": "合成中...",
-    "Voice synthesis failed": "音声合成に失敗しました"
+    "Voice synthesis failed": "音声合成に失敗しました",
+    "Online experience incurs usage-based fees": "オンライン体験は使用量に応じて課金されます"
   }
 }

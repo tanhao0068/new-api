@@ -4184,7 +4184,6 @@
     "Not installed": "Chưa cài đặt",
     "Not listed": "Ẩn",
     "Not matched": "Không khớp",
-    "Online experience incurs usage-based fees, see Model Details": "Trải nghiệm trực tuyến tính phí theo mức dùng, xem Chi tiết mô hình",
     "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}": "Nạp tiền trực tuyến thành công, số tiền đã nạp: {{quota}}, số tiền thanh toán: {{amount}}",
     "Not provided by this source": "Nguồn này không cung cấp",
     "Not recorded": "Chưa ghi nhận",
@@ -7326,6 +7325,7 @@
     "Speed": "Tốc độ",
     "Volume Gain": "Tăng âm lượng",
     "Synthesizing...": "Đang tổng hợp...",
-    "Voice synthesis failed": "Tổng hợp giọng nói thất bại"
+    "Voice synthesis failed": "Tổng hợp giọng nói thất bại",
+    "Online experience incurs usage-based fees": "Trải nghiệm trực tuyến sẽ tính phí theo lượng sử dụng"
   }
 }

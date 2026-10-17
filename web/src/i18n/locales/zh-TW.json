@@ -4184,7 +4184,6 @@
     "Not installed": "未安裝",
     "Not listed": "隱藏",
     "Not matched": "未符合",
-    "Online experience incurs usage-based fees, see Model Details": "線上體驗將依用量產生費用，詳見 模型詳情",
     "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}": "線上儲值成功，儲值額度：{{quota}}，支付金額：{{amount}}",
     "Not provided by this source": "該來源未提供",
     "Not recorded": "未記錄",
@@ -7326,6 +7325,7 @@
     "Speed": "語速",
     "Volume Gain": "音量增益",
     "Synthesizing...": "合成中…",
-    "Voice synthesis failed": "語音合成失敗"
+    "Voice synthesis failed": "語音合成失敗",
+    "Online experience incurs usage-based fees": "線上體驗將依照用量產生費用"
   }
 }

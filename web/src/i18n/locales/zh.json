@@ -4184,7 +4184,6 @@
     "Not installed": "未安装",
     "Not listed": "隐藏",
     "Not matched": "未匹配",
-    "Online experience incurs usage-based fees, see Model Details": "在线体验将按照用量产生费用，详见 模型详情",
     "Online top-up succeeded, amount added: {{quota}}, payment amount: {{amount}}": "在线充值成功，充值额度: {{quota}}，支付金额: {{amount}}",
     "Not provided by this source": "该源未提供",
     "Not recorded": "未记录",
@@ -7326,6 +7325,7 @@
     "Speed": "语速",
     "Volume Gain": "音量增益",
     "Synthesizing...": "合成中…",
-    "Voice synthesis failed": "语音合成失败"
+    "Voice synthesis failed": "语音合成失败",
+    "Online experience incurs usage-based fees": "在线体验将按照用量产生费用"
   }
 }

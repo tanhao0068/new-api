@@ -468,11 +468,31 @@ export function StudioShell() {
       />
     ) : null
 
+  // 顶栏「当前模型」：按模式取该模式配置的模型。
+  // 图像/视频/语音各有独立默认模型，不可沿用聊天模型（否则非对话页会错显聊天模型名）。
+  const readModeModel = (
+    key: 'image' | 'video' | 'voice',
+    fallback: string
+  ) => {
+    const cfg = (modeConfig.configs[key] ?? {}) as Record<string, unknown>
+    return typeof cfg.model === 'string' && cfg.model.trim() !== ''
+      ? cfg.model.trim()
+      : fallback
+  }
+  const activeModelName =
+    mode === 'image'
+      ? readModeModel('image', STUDIO_IMAGE_DEFAULT_MODEL)
+      : mode === 'video'
+        ? readModeModel('video', STUDIO_VIDEO_DEFAULT_MODEL)
+        : mode === 'voice'
+          ? readModeModel('voice', STUDIO_VOICE_DEFAULT_MODEL)
+          : config.model
+
   return (
     <>
       <StudioLayout
         mode={mode}
-        modelName={config.model}
+        modelName={activeModelName}
         parameterPanel={parameterPanel}
         prompt={
           <StudioPromptBar

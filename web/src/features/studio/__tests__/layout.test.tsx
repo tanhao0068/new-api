@@ -62,7 +62,7 @@ async function renderLayout(ui: ReactElement) {
   })
   render(<RouterProvider router={router} />)
   await screen.findByText(
-    'Online experience incurs usage-based fees, see Model Details'
+    'Online experience incurs usage-based fees'
   )
 }
 
